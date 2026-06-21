@@ -12,7 +12,7 @@ new
 class extends Component
 {
     public $shipments;
-    public $statusOptions = ["Created", "In Transit", "Out for Delivery", "Delivered"];
+    public $statusOptions = ["Shipment Booked", "Picked Up", "In Transit", "Delivered"];
 
     public function mount()
     {
@@ -23,6 +23,18 @@ class extends Component
     {
         $s = Shipment::find($id);
         $s->status = $status;
+        if($status === "Shipment Booked"){
+            $s->shipping_progress = 25;
+        }
+        if($status === "Picked Up"){
+            $s->shipping_progress = 50;
+        }
+        if($status === "In Transit"){
+            $s->shipping_progress = 75;
+        }
+        if($status === "Delivered"){
+            $s->shipping_progress = 100;
+        }
         $s->save();
 
         $this->mount(); // refresh list
