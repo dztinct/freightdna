@@ -4,9 +4,13 @@ use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Title;
 
+new
+#[Layout('layouts.app-new')]
+#[Title('Contact Us | FreightDNA')]
 
-new #[Layout('layouts.app-new')] class extends Component
+class extends Component
 {
     public string $first_name = '';
     public string $last_name = '';
@@ -24,7 +28,7 @@ new #[Layout('layouts.app-new')] class extends Component
 
         try{
             $mail_data = [
-                'recipient' => 'support@coldflamestechnologies.com',
+                'recipient' => 'you@freightdna.com',
                 'fromName'   => $this->first_name . ' ' . $this->last_name,
                 'fromEmail' => $this->email,
                 'body' => $this->message
@@ -32,8 +36,10 @@ new #[Layout('layouts.app-new')] class extends Component
 
         Mail::send('email.contact-template', $mail_data, function ($message) use ($mail_data) {
             $message->to($mail_data['recipient'])
-                    ->from('support@coldflamestechnologies.com', 'Freight DNA') // ✅ use your authenticated email
-                    ->replyTo($mail_data['fromEmail'], $mail_data['fromName']); // ✅ user’s email for replies
+                    ->from('you@freightdna.com', 'FreightDNA') //  your authenticated email
+                    ->replyTo($mail_data['fromEmail'], $mail_data['fromName']) // ✅ user’s email for replies
+                    ->subject('FreightDNA Contact Form — ' . $mail_data['fromName']);
+
         });
 
         session()->flash('success', 'Your message has been sent successfully.');
@@ -81,6 +87,11 @@ new #[Layout('layouts.app-new')] class extends Component
                 <div class="col-lg-8 mb-5">
 
                     @if (session('success'))
+                        <div class="alert alert-success text-center mb-4">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session('error'))
                         <div class="alert alert-success text-center mb-4">
                             {{ session('success') }}
                         </div>
@@ -142,7 +153,7 @@ new #[Layout('layouts.app-new')] class extends Component
                                 </button> --}}
 
                                 <button type="submit"
-                                class="px-6 py-2 bg-blue-600 text-white"
+                                class="px-6 py-2 bg-[#1649A2] text-white"
                                 wire:loading.attr="disabled">
                                 <svg wire:loading wire:target="submit"
                                     class="animate-spin h-5 w-5 text-white"

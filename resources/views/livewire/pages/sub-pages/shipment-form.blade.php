@@ -3,9 +3,13 @@
 use App\Models\Shipment;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use Livewire\Attributes\Title;
 
+new
+#[Layout('layouts.app-new')]
+#[Title('Shipment Form | FreightDNA')]
 
-new #[Layout('layouts.app-new')] class extends Component
+class extends Component
 {
     public $sender_name;
     public $sender_phone;
@@ -108,7 +112,7 @@ new #[Layout('layouts.app-new')] class extends Component
 
             <div class="buttons flex">
                 <button type="submit"
-                class="px-6 py-2 bg-blue-600 text-white"
+                class="px-6 py-2 bg-[#1649A2] text-white"
                 wire:loading.attr="disabled">
                 <svg wire:loading wire:target="submit"
                     class="animate-spin h-5 w-5 text-white"

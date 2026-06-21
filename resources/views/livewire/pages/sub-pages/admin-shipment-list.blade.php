@@ -3,8 +3,13 @@
 use App\Models\Shipment;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use Livewire\Attributes\Title;
 
-new #[Layout('layouts.app-new')] class extends Component
+new
+#[Layout('layouts.app-new')]
+#[Title('Admin | FreightDNA')]
+
+class extends Component
 {
     public $shipments;
     public $statusOptions = ["Created", "In Transit", "Out for Delivery", "Delivered"];

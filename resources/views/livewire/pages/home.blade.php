@@ -2,15 +2,62 @@
 
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use Livewire\Attributes\Title;
 
-new #[Layout('layouts.app-new')] class extends Component
+
+new #[Layout('layouts.app-new')] #[Title('Home | FreightDNA')]
+class extends Component
 {
+    public string $first_name = '';
+    public string $last_name = '';
+    public string $email = '';
+    public string $message = '';
 
+    public function submit()
+    {
+        $validated = $this->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name'  => 'required|string|max:255',
+            'email'      => 'required|email|max:255',
+            'message'    => 'required|string|min:5',
+        ]);
+
+        try{
+            $mail_data = [
+                'recipient' => 'you@freightdna.com',
+                'fromName'   => $this->first_name . ' ' . $this->last_name,
+                'fromEmail' => $this->email,
+                'body' => $this->message
+        ];
+
+        Mail::send('email.contact-template', $mail_data, function ($message) use ($mail_data) {
+            $message->to($mail_data['recipient'])
+                    ->from('you@freightdna.com', 'FreightDNA') // ✅ use your authenticated email
+                    ->replyTo($mail_data['fromEmail'], $mail_data['fromName']) // ✅ user’s email for replies
+                    ->subject('FreightDNA Contact Form — ' . $mail_data['fromName']);
+
+        });
+
+        session()->flash('success', 'Your message has been sent successfully.');
+
+        $this->reset(['first_name', 'last_name', 'email', 'message']);
+
+        return redirect()->back()->with('success', 'Message sent successfully.');
+        }catch(\Exception $e){
+            Log::error('Email sending failed with exception.', [
+            'error' => $e->getMessage(),
+            'data'  => $mail_data ?? []
+        ]);
+
+        return redirect()->back()->with('error', 'An error occurred while sending the message.');
+        }
+    }
 
 };
 ?>
 
 <div>
+
         <div class="ftco-blocks-cover-1">
           <div class="ftco-cover-1 overlay" style="background-image: url('images/depot_hero_1.jpg')">
             <div class="container">
@@ -23,7 +70,7 @@ new #[Layout('layouts.app-new')] class extends Component
                       <input type="text" class="form-control" placeholder="Your tracking number">
                       {{-- <input type="submit" class="btn btn-primary text-white px-4" value="Track Now"> --}}
                       <a href="{{ route('shipment.track') }}">
-                      <div class="pt-3 btn btn-primary">
+                      <div class="pt-3 btn bg-[#1649A2] text-white">
                             Track
                         </div>
                     </a>
@@ -80,7 +127,7 @@ new #[Layout('layouts.app-new')] class extends Component
                       <span class="flaticon-airplane"></span>
                     </div>
                     <h3 class="mb-3">Air Freight</h3>
-                    <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. </p>
+                    <p>Reliable air freight services designed for world-class efficiency, speed, security, and global reach. </p>
                 </div>
 
               <div class="block__35630 text-center">
@@ -88,7 +135,7 @@ new #[Layout('layouts.app-new')] class extends Component
                   <span class="flaticon-ferry"></span>
                 </div>
                 <h3 class="mb-3">Sea Freight</h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. </p>
+                <p>Reliable sea freight services providing secure, timely, and cost-effective international shipping solutions. </p>
               </div>
   
 
@@ -98,7 +145,7 @@ new #[Layout('layouts.app-new')] class extends Component
                   <span class="flaticon-add"></span>
                 </div>
                 <h3 class="mb-3">Procurement</h3>
-                <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. </p>
+                <p>Streamlined procurement solutions ensuring cost-effective, timely, and reliable sourcing for global logistics.</p>
               </div>
   
             </div>
@@ -345,33 +392,91 @@ new #[Layout('layouts.app-new')] class extends Component
           </div>
           <div class="row justify-content-center">
             <div class="col-lg-8 mb-5" data-aos="fade-up" data-aos-delay="100">
-              <form action="#" method="post">
-                <div class="form-group row">
-                  <div class="col-md-6 mb-4 mb-lg-0">
-                    <input type="text" class="form-control" placeholder="First name">
-                  </div>
-                  <div class="col-md-6">
-                    <input type="text" class="form-control" placeholder="First name">
-                  </div>
-                </div>
-  
-                <div class="form-group row">
-                  <div class="col-md-12">
-                    <input type="text" class="form-control" placeholder="Email address">
-                  </div>
-                </div>
-  
-                <div class="form-group row">
-                  <div class="col-md-12">
-                    <textarea name="" id="" class="form-control" placeholder="Write your message." cols="30" rows="10"></textarea>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-md-6 mr-auto">
-                    <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Send Message">
-                  </div>
-                </div>
-              </form>
+                    <form wire:submit.prevent="submit">
+
+                        <div class="form-group row">
+                            <div class="col-md-6 mb-4 mb-lg-0">
+                                <input type="text"
+                                    class="form-control"
+                                    placeholder="First name"
+                                    wire:model="first_name">
+                                @error('first_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <input type="text"
+                                    class="form-control"
+                                    placeholder="Last name"
+                                    wire:model="last_name">
+                                @error('last_name')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <input type="email"
+                                    class="form-control"
+                                    placeholder="Email address"
+                                    wire:model="email">
+                                @error('email')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <textarea class="form-control"
+                                    placeholder="Write your message."
+                                    wire:model="message"
+                                    cols="30" rows="10"></textarea>
+                                @error('message')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-6 mr-auto">
+                                {{-- <button type="submit"
+                                    class="btn btn-block btn-primary text-white py-3 px-5">
+                                    Send Message
+                                </button> --}}
+
+                                <button type="submit"
+                                class="px-6 py-2 bg-[#1649A2] text-white"
+                                wire:loading.attr="disabled">
+                                <svg wire:loading wire:target="submit"
+                                    class="animate-spin h-5 w-5 text-white"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                   <circle class="opacity-25" cx="12" cy="12" r="10"
+                                           stroke="currentColor" stroke-width="4"></circle>
+                                   <path class="opacity-75" fill="currentColor"
+                                         d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z">
+                                   </path>
+                                </svg>
+                                <span wire:loading.remove wire:target="submit">Send Message</span>
+                            </button>
+                            
+                            </div>
+                        </div>
+
+                    </form>
+                    @if (session('success'))
+                        <div class="alert alert-success text-center mb-4">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session('error'))
+                        <div class="alert alert-success text-center mb-4">
+                            {{ session('success') }}
+                        </div>
+                    @endif
             </div>
             
           </div>

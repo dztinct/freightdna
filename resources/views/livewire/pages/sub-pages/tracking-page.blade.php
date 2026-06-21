@@ -2,8 +2,12 @@
 
 use App\Models\Shipment;
 use Livewire\Volt\Component;
+use Livewire\Attributes\Title;
 
-new class extends Component {
+new
+#[Title('Tracking | FreightDNA')]
+
+class extends Component{
     public $tracking_number;
     public $shipment;
 
@@ -24,7 +28,7 @@ new class extends Component {
 
     <input type="text" wire:model="tracking_number" placeholder="Enter Tracking Number" class="w-full border p-2 rounded">
 
-    <button wire:click="search" class="px-6 py-2 bg-blue-600 text-white rounded">Track</button>
+    <button wire:click="search" class="px-6 py-2 bg-[#1649A2] text-white rounded">Track</button>
 
     @if(session('error'))
         <div class="p-3 bg-red-100 text-red-800 rounded">

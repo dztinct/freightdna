@@ -2,8 +2,13 @@
 
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
+use Livewire\Attributes\Title;
 
-new #[Layout('layouts.app-new')] class extends Component
+new
+#[Layout('layouts.app-new')]
+#[Title('About Us | FreightDNA')]
+
+class extends Component
 {
 
 

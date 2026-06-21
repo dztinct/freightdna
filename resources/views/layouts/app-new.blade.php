@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
+
+
+        <title>{{ $title ?? 'FreightDNA' }}</title>
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         
@@ -68,8 +72,11 @@
               <div class="row align-items-center position-relative">
     
     
-                <div class="site-logo">
-                  <a href="{{ route('home') }}" class="text-black"><span class="text-primary">Freight DNA</a>
+                <div class="site-logo flex items-center space-x-3 h-0">
+                  <a href="{{ route('home') }}">
+                      <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    </a>
+                    <a href="{{ route('home') }}" class="text-black"><span class="text-[#1649A2] text-2xl"><span class="capitalize">Freight</span>DNA </span></a>
                 </div>
     
                 <div class="col-12">
@@ -115,7 +122,7 @@
                       @endif
 
                       <li>
-                        <div class="btn btn-primary">
+                        <div class="btn bg-[#1649A2] m-2">
                             <a href="{{ route('shipment.track') }}">
                                 Track
                             </a>
@@ -123,7 +130,7 @@
                       </li>
 
                       @if(auth()->check())
-                      <li class="ms-2">
+                      <li class="my-2 btn text-start">
                         <livewire:layout.logout/>
                       </li>
                       @endif
@@ -181,7 +188,7 @@
             </div>
             <div class="col-md-4 ml-auto">
   
-              <div class="mb-5">
+              <!-- <div class="mb-5">
                 <h2 class="footer-heading mb-4">Subscribe to Newsletter</h2>
                 <form action="#" method="post" class="footer-suscribe-form">
                   <div class="input-group mb-3">
@@ -190,7 +197,7 @@
                       <button class="btn btn-primary text-white" type="button" id="button-addon2">Subscribe</button>
                     </div>
                   </div>
-              </div>
+              </div> -->
   
   
               <h2 class="footer-heading mb-4">Follow Us</h2>
