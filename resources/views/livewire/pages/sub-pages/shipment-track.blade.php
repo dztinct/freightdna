@@ -11,7 +11,7 @@ new
 
 class extends Component
 {
-    public $tracking_number = "TRK-QGLGNEV0J6";
+    public $tracking_number;
     public $shipment = null;
 
     public function search()
