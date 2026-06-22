@@ -74,8 +74,8 @@
     
                 <div class="site-logo flex items-center space-x-3 h-0">
                   <a href="{{ route('home') }}">
-                      {{-- <x-application-logo class="w-20 h-20 fill-current text-gray-500" /> --}}
-                      <img src="{{ asset('images/freight-logo-bg-rm.png') }}" alt="freight-logo" width="100" height="100">
+                      <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                      {{-- <img src="{{ asset('images/freight-logo-bg-rm.png') }}" alt="freight-logo" width="100" height="100"> --}}
                     </a>
                     <a href="{{ route('home') }}" class="text-black"><span class="text-[#1649A2] text-2xl"><span class="capitalize">Freight</span>DNA </span></a>
                 </div>

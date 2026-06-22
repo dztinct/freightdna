@@ -90,7 +90,7 @@ class extends Component
                 <p class="text-xs text-gray-500">{{ $tracking_number }}</p>
                 <p class="text-2xl font-bold text-black">{{ $shipment->item_description }}</p>
                 <p class="text-xs text-gray-500">
-                    Open Carrier ~ Booked {{ date('d M, Y') }}
+                    Open Carrier ~ Booked {{ $shipment->created_at->format('d M, Y') }}
                 </p>
             </div>
 
