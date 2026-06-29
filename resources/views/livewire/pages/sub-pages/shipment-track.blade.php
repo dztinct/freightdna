@@ -11,7 +11,7 @@ new
 
 class extends Component
 {
-    public $tracking_number;
+    public $tracking_number = "TRK-QGLGNEV0J6";
     public $shipment = null;
 
     public function search()
@@ -178,8 +178,9 @@ class extends Component
                 </div>
 
             </div>
-                        <div class="flex justify-between text-xs">
-                <p>Departed {{ $shipment->created_at->format('M d') }}</p><p>{{ $shipment->shipping_progress }}%</p><p>ETA {{ $shipment->created_at->addDays(5)->format('M d') }}</p>
+            <div class="flex justify-between text-xs">
+                <p>Departed {{ $shipment->created_at->format('M d') }}</p>
+                <p>{{ $shipment->shipping_progress }}%</p><p>ETA {{ $shipment->created_at->addDays(5)->format('M d') }}</p>
             </div>
 
         </div>
@@ -201,7 +202,7 @@ $timeline = [
 'status' => in_array(($shipment->status), [
 'Picked Up',
 'In Transit',
-'delivered'
+'Delivered'
 ]),
 ],
 [
@@ -297,14 +298,14 @@ $timeline = [
                     {{ $step['description'] }}
                 </p>
 
-                @if(
+                {{-- @if(
                     $step['status']
                     && !$loop->last
                 )
                     <p class="text-xs text-green-600 mt-1">
                         Completed
                     </p>
-                @endif
+                @endif --}}
 
             </div>
 
